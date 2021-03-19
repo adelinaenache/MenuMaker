@@ -1,5 +1,5 @@
 # MenuMaker
-Interactive restaurant menu creation engine
+Restaurant menu management site
 
 # Intended feature list:
 
