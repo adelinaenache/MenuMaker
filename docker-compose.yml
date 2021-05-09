@@ -1,0 +1,27 @@
+version: "3"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    depends_on:
+      - postgres
+    ports:
+      - "80:5000"
+    links:
+      - postgres
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: menumaker
+    volumes:
+      - postgres:/var/lib/postgresql/menu-maker-data
+
+volumes:
+  postgres: ~
