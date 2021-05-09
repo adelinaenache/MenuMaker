@@ -1,0 +1,17 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Restaurant {
+  id: Int!
+  access: Boolean
+  name: String!
+  city: String!
+  country: String!
+  address: String!
+  restaurants: [Restaurant!]!
+}
+
+type Query {
+  restaurant(id: Int!): Restaurant!
+}
