@@ -12,6 +12,48 @@ type Restaurant {
   restaurants: [Restaurant!]!
 }
 
+type User {
+  id: Int!
+  email: String!
+  firstName: String
+  lastName: String
+  restaurants: [Restaurant]
+}
+
+type Auth {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
 type Query {
   restaurant(id: Int!): Restaurant!
+  me: User!
+}
+
+type Mutation {
+  signup(data: SignupInput!): Auth!
+  login(data: LoginInput!): Auth!
+  refreshToken(data: String!): Auth!
+  update(data: UpdateUserInput!): User!
+  delete(id: Int!): User!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  firstName: String
+  lastName: String
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  id: Int!
+  email: String
+  firstName: String
+  lastName: String
 }

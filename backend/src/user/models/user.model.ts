@@ -3,8 +3,11 @@ import { Restaurant } from '../../restaurant/models/restaurant.model';
 
 @ObjectType()
 export class User {
-  @Field((type) => Int)
+  @Field(() => Int)
   id: number;
+
+  @Field()
+  email: string;
 
   @Field({ nullable: true })
   firstName?: string;
@@ -12,6 +15,8 @@ export class User {
   @Field({ nullable: true })
   lastName?: string;
 
-  @Field((type) => Restaurant, { nullable: 'items' })
-  restaurants: Restaurant[];
+  password?: string;
+
+  @Field(() => [Restaurant], { nullable: 'itemsAndList' })
+  restaurants?: Restaurant[];
 }
