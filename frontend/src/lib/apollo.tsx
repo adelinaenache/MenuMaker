@@ -1,11 +1,9 @@
 import { useMemo } from "react";
 import merge from "deepmerge";
-import cookie from "cookie";
-import type { GetServerSidePropsContext } from "next";
-import type { IncomingMessage } from "http";
 import type { NormalizedCacheObject } from "@apollo/client";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { ACCESS_TOKEN, getToken } from "../utils/token";
 
 export const APOLLO_STATE_PROPERTY_NAME = "__APOLLO_STATE__";
 export const COOKIES_TOKEN_NAME = "jwt";
@@ -15,25 +13,21 @@ interface PageProps {
   [APOLLO_STATE_PROPERTY_NAME]?: any;
 }
 
-const getToken = (req?: IncomingMessage) => {
-  const parsedCookie = cookie.parse(
-    req ? req.headers.cookie ?? "" : document.cookie
-  );
-
-  return parsedCookie[COOKIES_TOKEN_NAME];
-};
-
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
-const createApolloClient = (ctx?: GetServerSidePropsContext) => {
+const createApolloClient = () => {
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_GRAPHQL_URI,
-    credentials: "same-origin",
+    uri: "http://localhost:8000/graphql",
+    // credentials: "include",
   });
+
+  console.log(httpLink);
 
   const authLink = setContext((_, { headers }) => {
     // Get the authentication token from cookies
-    const token = getToken(ctx?.req);
+    const token = getToken(ACCESS_TOKEN);
+
+    console.log("auth", token ? `Bearer ${token}` : "aci");
 
     return {
       headers: {
@@ -51,10 +45,9 @@ const createApolloClient = (ctx?: GetServerSidePropsContext) => {
 };
 
 export function initializeApollo(
-  initialState: NormalizedCacheObject | null = null,
-  ctx = undefined
+  initialState: NormalizedCacheObject | null = null
 ) {
-  const client = apolloClient ?? createApolloClient(ctx);
+  const client = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client,
   // the initial state gets hydrated here
