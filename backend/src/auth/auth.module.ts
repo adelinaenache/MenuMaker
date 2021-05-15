@@ -15,12 +15,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
       signOptions: { expiresIn: JWT_EXPIRE },
     }),
   ],
-  providers: [
-    AuthService,
-    AuthResolver,
-    JwtStrategy,
-    // GqlAuthGuard,
-    PrismaService,
-  ],
+  providers: [AuthService, AuthResolver, JwtStrategy, PrismaService],
 })
 export class AuthModule {}
