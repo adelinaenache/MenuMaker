@@ -1,5 +1,5 @@
 import React from 'react';
-import { MotionBox } from '../../../components';
+import { MotionBox } from '@/components';
 
 export const AnimatedIntroCard = ({ children }: { children: React.ReactNode }) => {
   return (
