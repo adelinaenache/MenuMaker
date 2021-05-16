@@ -1,19 +1,26 @@
-import { Center, Heading, Text } from '@chakra-ui/layout';
-import { Formik, Form } from 'formik';
-import * as React from 'react';
-import { AnimatedIntroCard, Layout } from './components';
-import { InputControl, SubmitButton } from 'formik-chakra-ui';
-import * as yup from 'yup';
-import { useMutation } from '@apollo/client';
-import { LOGIN } from '../../utils/graphql/auth';
-import { AuthMutation, LoginResult } from '../../types/AuthTypes';
-import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from '../../utils/token';
-import { useState } from 'react';
+import { Center, Heading, Text } from "@chakra-ui/layout";
+import { Formik, Form } from "formik";
+import * as React from "react";
+import { AnimatedIntroCard, Layout } from "./components";
+import { InputControl, SubmitButton } from "formik-chakra-ui";
+import * as yup from "yup";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../../utils/graphql/auth";
+import { AuthMutation, LoginResult } from "../../types/AuthTypes";
+import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from "../../utils/token";
+import { useState } from "react";
 
-const passwordYupSchema = yup.string().required('Field is required').min(8, '').max(64, '');
+const passwordYupSchema = yup
+  .string()
+  .required("Field is required")
+  .min(8, "")
+  .max(64, "");
 
 const loginSchema = yup.object().shape({
-  email: yup.string().email('Invalid email address. Try again.').required('Field is required'),
+  email: yup
+    .string()
+    .email("Invalid email address. Try again.")
+    .required("Field is required"),
   password: passwordYupSchema,
 });
 
@@ -37,7 +44,7 @@ export default function Login() {
         <Heading my="10">Login</Heading>
         <AnimatedIntroCard>
           <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ email: "", password: "" }}
             validationSchema={loginSchema}
             onSubmit={async (values) => {
               setErrorMessage(null);
@@ -53,7 +60,12 @@ export default function Login() {
             {() => (
               <Form>
                 <InputControl name="email" label="Email" mt="4" />
-                <InputControl name="password" label="Password" mt="4" inputProps={{ type: 'password' }} />
+                <InputControl
+                  name="password"
+                  label="Password"
+                  mt="4"
+                  inputProps={{ type: "password" }}
+                />
                 <Center mt="8" flexDirection="column">
                   {errorMessage && (
                     <Text color="red" mb="8">
