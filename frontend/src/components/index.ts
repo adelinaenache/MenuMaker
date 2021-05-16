@@ -1,2 +1,1 @@
-export { MotionBox } from './MotionBox';
-export * from './auth';
+export { MotionBox } from "./MotionBox";

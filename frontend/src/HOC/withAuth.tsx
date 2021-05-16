@@ -1,14 +1,15 @@
-import { useQuery } from '@apollo/client';
-import { Spinner } from '@chakra-ui/spinner';
-import { Container } from 'next/app';
-import { useRouter } from 'next/dist/client/router';
-import React from 'react';
-import { UserResult } from '../types/UserTypes';
-import { ME } from '../utils/graphql/user';
+import { useQuery } from "@apollo/client";
+import { Spinner } from "@chakra-ui/spinner";
+import { Container } from "next/app";
+import { useRouter } from "next/dist/client/router";
+import React from "react";
+import { UserResult } from "../types/UserTypes";
+import { ME } from "../utils/graphql/user";
 
 export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
-    const { loading, error } = useQuery<UserResult>(ME);
+    const { loading, data, error } = useQuery<UserResult>(ME);
+    const router = useRouter();
 
     if (loading) {
       return (
@@ -20,7 +21,7 @@ export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
 
     if (error) {
       // router.replace("auth/login");
-      console.error(error);
+      console.log(error);
       return null;
     }
 
