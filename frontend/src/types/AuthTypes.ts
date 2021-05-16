@@ -1,5 +1,5 @@
-import { MutationResult } from "@apollo/client";
-import { User } from "./UserTypes";
+import { MutationResult } from '@apollo/client';
+import { User } from './UserTypes';
 
 export type Auth = {
   accessToken: string;
