@@ -3,7 +3,7 @@ import merge from 'deepmerge';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { ACCESS_TOKEN, getToken } from '../utils/token';
+import { ACCESS_TOKEN, getToken } from '@/utils/token';
 
 export const APOLLO_STATE_PROPERTY_NAME = '__APOLLO_STATE__';
 export const COOKIES_TOKEN_NAME = 'jwt';

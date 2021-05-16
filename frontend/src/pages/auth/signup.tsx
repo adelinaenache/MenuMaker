@@ -1,13 +1,13 @@
 import { Center, Heading, Text } from '@chakra-ui/layout';
 import { Formik, Form } from 'formik';
 import * as React from 'react';
-import { AnimatedIntroCard, Layout } from 'src/components';
+import { AnimatedIntroCard, Layout } from '@/components';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
-import { SIGNUP } from '../../utils/graphql/auth';
-import { AuthMutation, SignupResult } from '../../types/AuthTypes';
-import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from '../../utils/token';
+import { SIGNUP } from '@/gql/auth';
+import { AuthMutation, SignupResult } from '@/types/AuthTypes';
+import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from '@/utils/token';
 import { useState } from 'react';
 
 const passwordYupSchema = yup.string().required('Field is required').min(8, '').max(64, '');

@@ -16,7 +16,20 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "baseUrl": "src",
+    "paths": {
+      "@/components": ["components"],
+      "@/components/*": ["components/*"],
+      "@/types": ["types"],
+      "@/types/*": ["types/*"],
+      "@/utils": ["utils"],
+      "@/utils/*": ["utils/*"],
+      "@/gql": ["utils/graphql"],
+      "@/gql/*": ["utils/graphql/*"],
+      "@/hooks": ["hooks"],
+      "@/hooks/*":  ["hooks/*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]
