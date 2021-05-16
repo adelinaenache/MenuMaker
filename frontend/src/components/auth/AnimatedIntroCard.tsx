@@ -1,11 +1,7 @@
-import React from "react";
-import { MotionBox } from "../../../components";
+import React from 'react';
+import { MotionBox } from '../../../components';
 
-export const AnimatedIntroCard = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const AnimatedIntroCard = ({ children }: { children: React.ReactNode }) => {
   return (
     <MotionBox
       borderWidth="1px"
