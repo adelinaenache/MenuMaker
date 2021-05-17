@@ -1,10 +1,20 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { UserService } from './user.service';
-import { User } from './models/user.model';
-import { UpdateUserInput } from './dto/update-user.input';
-import { GqlAuthGuard } from 'src/utils/guards/auth.guard';
 import { UseGuards } from '@nestjs/common';
-import { CurrentUser } from 'src/utils/decorators/user.decorator';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { Restaurant } from 'restaurant/models/restaurant.model';
+import { RestaurantService } from 'restaurant/restaurant.service';
+import { CurrentUser } from 'utils/decorators/user.decorator';
+import { GqlAuthGuard } from 'utils/guards/auth.guard';
+import { UpdateUserInput } from './dto/update-user.input';
+import { User } from './models/user.model';
+import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
