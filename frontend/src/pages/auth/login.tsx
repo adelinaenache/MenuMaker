@@ -10,7 +10,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from '@/utils/token';
 import { LOGIN } from '@/gql/auth';
 import { useState } from 'react';
 
-const passwordYupSchema = yup.string().required('Field is required').min(8, '').max(64, '');
+const passwordYupSchema = yup.string().required('Field is required');
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Invalid email address. Try again.').required('Field is required'),
@@ -41,7 +41,7 @@ export default function Login() {
             validationSchema={loginSchema}
             onSubmit={async (values) => {
               setErrorMessage(null);
-              sendLogin({
+              await sendLogin({
                 variables: {
                   email: values.email,
                   password: values.password,

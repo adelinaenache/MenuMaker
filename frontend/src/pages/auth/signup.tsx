@@ -10,7 +10,7 @@ import { AuthMutation, SignupResult } from '@/types/AuthTypes';
 import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from '@/utils/token';
 import { useState } from 'react';
 
-const passwordYupSchema = yup.string().required('Field is required').min(8, '').max(64, '');
+const passwordYupSchema = yup.string().required('Field is required').min(1).max(64);
 
 const signupSchema = yup.object().shape({
   email: yup.string().email('Invalid email address. Try again.').required('Field is required'),
@@ -47,7 +47,7 @@ export default function Signup() {
             validationSchema={signupSchema}
             onSubmit={async (values) => {
               setErrorMessage(null);
-              sendSignup({
+              await sendSignup({
                 variables: {
                   email: values.email,
                   password: values.password,
