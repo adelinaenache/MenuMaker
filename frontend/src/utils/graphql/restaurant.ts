@@ -4,6 +4,7 @@ import { gql } from '@apollo/client/core';
 export const MY_RESTAURANTS = gql`
   query MY_RESTAURANTS {
     me {
+      id
       restaurants {
         id
         name
