@@ -2,7 +2,7 @@ import { Restaurant } from '@/types/restaurant';
 import { gql } from '@apollo/client/core';
 
 export const MY_RESTAURANTS = gql`
-  query {
+  query MY_RESTAURANTS {
     me {
       restaurants {
         id
