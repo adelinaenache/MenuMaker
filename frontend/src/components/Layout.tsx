@@ -1,12 +1,19 @@
-import { Container, Footer, Header, Main } from '@/components';
+import { ConditionalWrapper, Container, Footer, Header, Main } from '@/components';
 import React from 'react';
 
-export const Layout = ({ children }: { children?: React.ReactNode }) => {
+export type LayoutProps = {
+  children?: React.ReactNode;
+  unwrapped?: true;
+};
+
+export const Layout = ({ children, unwrapped }: LayoutProps) => {
   return (
     <Container height="100vh">
       <Header />
 
-      <Main>{children}</Main>
+      <ConditionalWrapper condition={!unwrapped} thenComponent={<Main />}>
+        {children}
+      </ConditionalWrapper>
 
       <Footer />
     </Container>
