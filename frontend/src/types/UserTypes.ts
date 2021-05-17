@@ -5,4 +5,6 @@ export type User = {
   id: number;
 };
 
-export type UserResult = User;
+export type UserResult = {
+  me: User;
+};

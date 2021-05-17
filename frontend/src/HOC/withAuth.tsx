@@ -1,13 +1,11 @@
-import { useQuery } from '@apollo/client';
 import { Spinner } from '@chakra-ui/spinner';
+import { useUser } from 'lib/hooks/useUser';
 import { Container } from 'next/app';
 import React from 'react';
-import { UserResult } from '@/types/UserTypes';
-import { ME } from '@/gql/user';
 
 export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
-    const { loading, error } = useQuery<UserResult>(ME);
+    const { loading, error } = useUser();
 
     if (loading) {
       return (
