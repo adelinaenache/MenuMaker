@@ -1,4 +1,4 @@
-import { Container, Footer, Header } from '@/components';
+import { Container, Footer, Header, Main } from '@/components';
 import React from 'react';
 
 export const Layout = ({ children }: { children?: React.ReactNode }) => {
@@ -6,7 +6,7 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => {
     <Container height="100vh">
       <Header />
 
-      {children}
+      <Main>{children}</Main>
 
       <Footer />
     </Container>
