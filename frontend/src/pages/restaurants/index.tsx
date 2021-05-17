@@ -12,10 +12,10 @@ const RestaurantsDashboard = withAuth(() => {
       {restaurants.length === 0 && <Text>You have no restaurants.</Text>}
 
       {restaurants.map((restaurant, index) => (
-        <Text key={index}>a</Text>
+        <Text key={index}>{restaurant.name}</Text>
       ))}
 
-      <Button href="/restaurants/create" w={40}>
+      <Button href="/restaurants/new" w={40}>
         Add a restaurant
       </Button>
     </Layout>
