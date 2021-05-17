@@ -18,12 +18,21 @@ import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly restaurantService: RestaurantService,
+  ) {}
 
   @Query(() => User)
   @UseGuards(GqlAuthGuard)
   me(@CurrentUser() user: User) {
     return user;
+  }
+
+  @ResolveField('restaurants', () => [Restaurant])
+  async restaurants(@Parent() user: User) {
+    const { id } = user;
+    return this.restaurantService.findByUserId(id);
   }
 
   @Mutation(() => User)
