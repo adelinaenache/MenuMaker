@@ -22,4 +22,17 @@ export class RestaurantService {
       },
     });
   }
+
+  async create(user: User, data: CreateRestaurantInput) {
+    return this.prisma.restaurant.create({
+      data: {
+        owner: {
+          connect: {
+            id: user.id,
+          },
+        },
+        ...data,
+      },
+    });
+  }
 }
