@@ -1,6 +1,6 @@
 import { Hero, Layout, Main } from '@/components';
 import { Text } from '@chakra-ui/react';
-import { useUser } from 'lib/hooks/useUser';
+import { useUser } from '@/hooks';
 
 const Index = () => {
   const { user } = useUser();

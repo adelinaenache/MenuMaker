@@ -1,5 +1,5 @@
 import { Spinner } from '@chakra-ui/spinner';
-import { useUser } from 'lib/hooks/useUser';
+import { useUser } from '@/hooks';
 import { Container } from 'next/app';
 import React from 'react';
 
