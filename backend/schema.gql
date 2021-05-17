@@ -9,7 +9,6 @@ type Restaurant {
   city: String!
   country: String!
   address: String!
-  restaurants: [Restaurant!]!
 }
 
 type User {
@@ -32,11 +31,19 @@ type Query {
 }
 
 type Mutation {
+  createRestaurant(data: CreateRestaurantInput!): Restaurant!
   signup(data: SignupInput!): Auth!
   login(data: LoginInput!): Auth!
   refreshToken(data: String!): Auth!
   update(data: UpdateUserInput!): User!
   delete(id: Int!): User!
+}
+
+input CreateRestaurantInput {
+  name: String!
+  country: String!
+  city: String!
+  address: String!
 }
 
 input SignupInput {

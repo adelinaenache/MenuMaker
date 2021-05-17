@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'prisma/prisma.service';
 import { Auth } from './models/auth.model';
 import { hash, compare } from 'bcrypt';
-import { HASH_ROUNDS, JWT_REFRESH_EXPIRE } from 'src/constants';
+import { HASH_ROUNDS, JWT_REFRESH_EXPIRE } from 'utils/constants';
 import { SignupInput } from './dto/signup.dto';
 import { LoginInput } from './dto/login.dto';
 

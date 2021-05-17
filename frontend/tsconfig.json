@@ -28,7 +28,8 @@
       "@/gql": ["utils/graphql"],
       "@/gql/*": ["utils/graphql/*"],
       "@/hooks": ["hooks"],
-      "@/hooks/*":  ["hooks/*"]
+      "@/hooks/*": ["hooks/*"],
+      "@/hoc": ["HOC"]
     }
   },
   "exclude": ["node_modules"],

@@ -1,26 +1,23 @@
-import { useQuery } from '@apollo/client';
 import { Spinner } from '@chakra-ui/spinner';
-import { Container } from 'next/app';
+import { useUser } from '@/hooks';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { UserResult } from '@/types/UserTypes';
-import { ME } from '@/gql/user';
 
 export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
   return (props: T) => {
-    const { loading, error } = useQuery<UserResult>(ME);
+    const { loading, error } = useUser();
+    const router = useRouter();
 
     if (loading) {
-      return (
-        <Container>
-          <Spinner size="xl" />
-        </Container>
-      );
+      return <Spinner size="xl" />;
     }
 
     if (error) {
-      // router.replace("auth/login");
-      console.error(error);
-      return null;
+      router.replace('/auth/login');
+    }
+
+    if (loading || error) {
+      return <Spinner size="xl" />;
     }
 
     return <WrappedComponent {...props} />;
