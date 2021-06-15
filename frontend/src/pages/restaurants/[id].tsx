@@ -1,13 +1,14 @@
-import { Layout } from '@/components';
+import { Button, Layout } from '@/components';
 import { useRestaurantMenu } from '@/hooks/useRestaurantMenu';
-import { Item } from '@/types/restaurant';
 import { Box, Flex, SimpleGrid, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 const Restaurant = () => {
   const router = useRouter();
   const { categories } = useRestaurantMenu(parseInt(router.query.id as string));
+
+  console.log(categories);
 
   return (
     <Layout>
@@ -31,9 +32,37 @@ const Restaurant = () => {
                 </Flex>
               </Box>
             ))}
+
+            <Button
+              maxW="sm"
+              borderRadius="lg"
+              overflow="hidden"
+              cursor="pointer"
+              minH="120px"
+              onClick={() => {
+                console.log('adding item');
+              }}
+            >
+              <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
+                <Text fontSize="3xl" color="gray.100">
+                  Add new item
+                </Text>
+              </Flex>
+            </Button>
           </SimpleGrid>
         </Box>
       ))}
+
+      <Flex justifyContent="center" pt={6}>
+        <Button
+          w={60}
+          onClick={() => {
+            console.log('adding cat');
+          }}
+        >
+          Add new category
+        </Button>
+      </Flex>
     </Layout>
   );
 };

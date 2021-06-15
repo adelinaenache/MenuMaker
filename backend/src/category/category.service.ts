@@ -14,7 +14,7 @@ export class CategoryService {
   }
 
   findAllByRestaurantId(restaurantId: number) {
-    return this.prisma.category.findMany({ where: { id: restaurantId } });
+    return this.prisma.category.findMany({ where: { restaurantId } });
   }
 
   update(id: number, updateCategoryInput: UpdateCategoryInput) {
