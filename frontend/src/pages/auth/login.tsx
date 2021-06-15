@@ -9,7 +9,6 @@ import { AuthMutation, LoginResult } from '@/types/AuthTypes';
 import { ACCESS_TOKEN, REFRESH_TOKEN, setToken } from '@/utils/token';
 import { LOGIN } from '@/gql/auth';
 import { useState } from 'react';
-import router from 'next/router';
 
 const passwordYupSchema = yup.string().required('Field is required');
 
@@ -21,13 +20,10 @@ const loginSchema = yup.object().shape({
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [sendLogin] = useMutation<LoginResult, AuthMutation>(LOGIN, {
-    async onCompleted({ login }) {
+    onCompleted({ login }) {
       if (login) {
         setToken(ACCESS_TOKEN, login.accessToken);
         setToken(REFRESH_TOKEN, login.refreshToken);
-        await router.push({
-          pathname: "/",
-        });
       }
     },
     onError(err) {
