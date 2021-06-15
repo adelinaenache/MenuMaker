@@ -1,7 +1,7 @@
 import { Center, Heading, Text } from '@chakra-ui/layout';
 import { Formik, Form } from 'formik';
 import * as React from 'react';
-import { AnimatedIntroCard, Layout } from '@/components';
+import { AnimatedIntroCard, Button, Layout } from "@/components";
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
@@ -61,6 +61,9 @@ export default function Login() {
                     </Text>
                   )}
                   <SubmitButton type="submit">Login</SubmitButton>
+                  <Button href="/auth/signup" colorScheme="blue" variant="link">
+                    you don&apos;t have an account yet? Signup here!
+                  </Button>
                 </Center>
               </Form>
             )}
