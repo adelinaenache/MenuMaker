@@ -12,10 +12,7 @@ import { RestaurantService } from './restaurant.service';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
-  constructor(
-    private readonly restaurantService: RestaurantService,
-    private readonly itemService: ItemService,
-  ) {}
+  constructor(private readonly restaurantService: RestaurantService, private readonly itemService: ItemService) {}
 
   @Query(() => [Restaurant])
   async restaurants() {
@@ -34,10 +31,7 @@ export class RestaurantResolver {
 
   @Mutation(() => Restaurant)
   @UseGuards(GqlAuthGuard)
-  async createRestaurant(
-    @CurrentUser() user: User,
-    @Args('data') createRestaurantInput: CreateRestaurantInput,
-  ) {
+  async createRestaurant(@CurrentUser() user: User, @Args('data') createRestaurantInput: CreateRestaurantInput) {
     return this.restaurantService.create(user, createRestaurantInput);
   }
 }

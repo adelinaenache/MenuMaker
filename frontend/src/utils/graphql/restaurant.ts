@@ -1,4 +1,4 @@
-import { Restaurant } from '@/types/restaurant';
+import { Menu, Restaurant } from '@/types/restaurant';
 import { gql } from '@apollo/client/core';
 
 export const RESTAURANT_FIELDS = gql`
@@ -11,6 +11,29 @@ export const RESTAURANT_FIELDS = gql`
     address
   }
 `;
+
+export const RESTAURANT_MENU = gql`
+  query RESTAURANT_MENU($id: Int!) {
+    restaurant(id: $id) {
+      menu {
+        id
+        name
+        description
+        category
+        price
+        image
+      }
+    }
+  }
+`;
+
+export type RestaurantMenuParams = Pick<Restaurant, 'id'>;
+
+export type RestaurantMenuResult = {
+  restaurant: {
+    menu: Menu;
+  };
+};
 
 export const MY_RESTAURANTS = gql`
   ${RESTAURANT_FIELDS}

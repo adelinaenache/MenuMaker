@@ -1,4 +1,5 @@
 import { Button, Layout } from '@/components';
+import { NextChakraLink } from '@/components/NextChakraLink';
 import { withAuth } from '@/hoc';
 import { useRestaurantList } from '@/hooks';
 import { Text } from '@chakra-ui/react';
@@ -12,7 +13,9 @@ const RestaurantsDashboard = withAuth(() => {
       {restaurants.length === 0 && <Text>You have no restaurants.</Text>}
 
       {restaurants.map((restaurant, index) => (
-        <Text key={index}>{restaurant.name}</Text>
+        <NextChakraLink href={`/restaurants/${restaurant.id}`} key={index}>
+          {restaurant.name}
+        </NextChakraLink>
       ))}
 
       <Button href="/restaurants/new" w={40}>
