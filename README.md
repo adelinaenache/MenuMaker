@@ -25,7 +25,7 @@ Restaurant menu management site
 * Prisma - Typescript ORM language for database interfacing
 * Docker - for hosting the PostgreSQL instance
 
-#User stories:
+# User stories:
 * As a restaurant admin,
   I want to be able to log-in
   so that I can access the restaurants I manage.
