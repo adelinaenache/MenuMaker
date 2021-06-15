@@ -29,5 +29,18 @@ model Restaurant {
   userId    Int
   createdAt DateTime @default(now())
   access    Boolean  @default(false)
+  items     Item[]
   owner     User     @relation(fields: [userId], references: [id])
+}
+
+model Item {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Float
+  category     String
+  image        String?
+  restaurantId Int
+  createdAt    DateTime   @default(now())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
 }

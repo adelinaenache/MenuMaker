@@ -7,6 +7,10 @@ import { User } from 'user/models/user.model';
 export class RestaurantService {
   constructor(private prisma: PrismaService) {}
 
+  async findAll() {
+    return this.prisma.restaurant.findMany();
+  }
+
   async findOne(id: number) {
     return this.prisma.restaurant.findUnique({
       where: {

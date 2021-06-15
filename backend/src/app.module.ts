@@ -6,6 +6,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { RestaurantsModule } from './restaurant/restaurant.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { ItemModule } from './item/item.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: 'schema.gql',
     }),
     UserModule,
+    ItemModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

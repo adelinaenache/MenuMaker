@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Item {
+  id: Float!
+  name: String!
+  description: String
+  price: Float!
+  category: String!
+  image: String
+}
+
 type Restaurant {
   id: Int!
   access: Boolean
@@ -9,6 +18,7 @@ type Restaurant {
   city: String!
   country: String!
   address: String!
+  menu: [Item!]!
 }
 
 type User {
@@ -26,12 +36,17 @@ type Auth {
 }
 
 type Query {
+  restaurants: [Restaurant!]!
   restaurant(id: Int!): Restaurant!
+  menu(restaurantId: Int!): [Item!]!
   me: User!
 }
 
 type Mutation {
   createRestaurant(data: CreateRestaurantInput!): Restaurant!
+  createItem(createItemInput: CreateItemInput!): Item!
+  updateItem(updateItemInput: UpdateItemInput!): Item!
+  removeItem(id: Int!): Item!
   signup(data: SignupInput!): Auth!
   login(data: LoginInput!): Auth!
   refreshToken(data: String!): Auth!
@@ -44,6 +59,24 @@ input CreateRestaurantInput {
   country: String!
   city: String!
   address: String!
+}
+
+input CreateItemInput {
+  name: String!
+  description: String
+  price: Float!
+  category: String!
+  image: String
+  restaurantId: Float!
+}
+
+input UpdateItemInput {
+  id: Float
+  name: String
+  description: String
+  price: Float
+  category: String
+  image: String
 }
 
 input SignupInput {
