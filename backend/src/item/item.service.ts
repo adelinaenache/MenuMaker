@@ -7,17 +7,17 @@ import { UpdateItemInput } from './dto/update-item.input';
 export class ItemService {
   constructor(private prisma: PrismaService) {}
 
-  create({ restaurantId, ...createItemInput }: CreateItemInput) {
+  create({ categoryId, ...createItemInput }: CreateItemInput) {
     return this.prisma.item.create({
       data: {
         ...createItemInput,
-        restaurant: { connect: { id: restaurantId } },
+        category: { connect: { id: categoryId } },
       },
     });
   }
 
-  findAllByRestaurantId(id: number) {
-    return this.prisma.item.findMany({ where: { restaurantId: id } });
+  findAllByCategoryId(id: number) {
+    return this.prisma.item.findMany({ where: { categoryId: id } });
   }
 
   update(id: number, updateItemInput: UpdateItemInput) {

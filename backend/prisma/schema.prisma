@@ -20,27 +20,34 @@ model User {
   Restaurant Restaurant[]
 }
 
+model Category {
+  id           Int         @id @default(autoincrement())
+  name         String
+  items        Item[]
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+}
+
 model Restaurant {
-  id        Int      @id @default(autoincrement())
-  name      String
-  country   String
-  city      String
-  address   String
-  userId    Int
-  createdAt DateTime @default(now())
-  access    Boolean  @default(false)
-  items     Item[]
-  owner     User     @relation(fields: [userId], references: [id])
+  id         Int        @id @default(autoincrement())
+  name       String
+  country    String
+  city       String
+  address    String
+  userId     Int
+  createdAt  DateTime   @default(now())
+  access     Boolean    @default(false)
+  categories Category[]
+  owner      User       @relation(fields: [userId], references: [id])
 }
 
 model Item {
-  id           Int        @id @default(autoincrement())
-  name         String
-  description  String?
-  price        Float
-  category     String
-  image        String?
-  restaurantId Int
-  createdAt    DateTime   @default(now())
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  image       String?
+  createdAt   DateTime  @default(now())
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
 }

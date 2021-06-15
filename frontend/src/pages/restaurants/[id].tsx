@@ -7,28 +7,18 @@ import React, { useMemo } from 'react';
 
 const Restaurant = () => {
   const router = useRouter();
-  const { menu: menuData } = useRestaurantMenu(parseInt(router.query.id as string));
-
-  const menu = useMemo(() => {
-    const categories: Record<string, Item[]> = {};
-
-    menuData.forEach((item) => {
-      categories[item.category] = [...(categories[item.category] ?? []), item];
-    });
-
-    return categories;
-  }, [menuData]);
+  const { categories } = useRestaurantMenu(parseInt(router.query.id as string));
 
   return (
     <Layout>
-      {Object.entries(menu).map(([category, items]) => (
-        <Box key={category}>
+      {categories.map((category) => (
+        <Box key={category.name}>
           <Text fontSize="4xl" my={6} textAlign="center">
-            {category}
+            {category.name}
           </Text>
 
           <SimpleGrid columns={3} gap={6}>
-            {items.map((item) => (
+            {category.items.map((item) => (
               <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={item.id}>
                 <Flex flexDir="column" flex="1" px={6} py={3} minH="120px">
                   <Flex flexDir="column" flex="1">

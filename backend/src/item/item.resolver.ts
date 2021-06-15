@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { ItemService } from './item.service';
 import { Item } from './entities/item.entity';
 import { CreateItemInput } from './dto/create-item.input';
@@ -11,13 +11,6 @@ export class ItemResolver {
   @Mutation(() => Item)
   createItem(@Args('createItemInput') createItemInput: CreateItemInput) {
     return this.itemService.create(createItemInput);
-  }
-
-  @Query(() => [Item], { name: 'menu' })
-  findAllByRestaurantId(
-    @Args('restaurantId', { type: () => Int }) restaurantId: number,
-  ) {
-    return this.itemService.findAllByRestaurantId(restaurantId);
   }
 
   @Mutation(() => Item)

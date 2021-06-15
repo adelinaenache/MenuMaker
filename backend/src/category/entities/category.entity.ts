@@ -1,10 +1,7 @@
 import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class Item {
+export class Category {
   id: number;
   name: string;
-  description?: string;
-  price: number;
-  image?: string;
 }

@@ -3,5 +3,5 @@ import { Item } from 'item/entities/item.entity';
 
 @InputType()
 export class CreateItemInput extends OmitType(Item, ['id'] as const, InputType) {
-  restaurantId: number;
+  categoryId: number;
 }

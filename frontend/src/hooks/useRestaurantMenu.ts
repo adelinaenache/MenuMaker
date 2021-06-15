@@ -6,5 +6,5 @@ export const useRestaurantMenu = (restaurantId: number) => {
     variables: { id: restaurantId },
   });
 
-  return { menu: data?.restaurant.menu ?? [], ...rest };
+  return { categories: data?.restaurant.categories ?? [], ...rest };
 };

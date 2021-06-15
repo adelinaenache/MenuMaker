@@ -7,8 +7,13 @@ type Item {
   name: String!
   description: String
   price: Float!
-  category: String!
   image: String
+}
+
+type Category {
+  id: Float!
+  name: String!
+  items: [Item!]!
 }
 
 type Restaurant {
@@ -18,7 +23,7 @@ type Restaurant {
   city: String!
   country: String!
   address: String!
-  menu: [Item!]!
+  categories: [Category!]!
 }
 
 type User {
@@ -38,12 +43,15 @@ type Auth {
 type Query {
   restaurants: [Restaurant!]!
   restaurant(id: Int!): Restaurant!
-  menu(restaurantId: Int!): [Item!]!
+  category(restaurantId: Int!): [Category!]!
   me: User!
 }
 
 type Mutation {
   createRestaurant(data: CreateRestaurantInput!): Restaurant!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
   removeItem(id: Int!): Item!
@@ -61,13 +69,22 @@ input CreateRestaurantInput {
   address: String!
 }
 
+input CreateCategoryInput {
+  name: String!
+  restaurantId: Float!
+}
+
+input UpdateCategoryInput {
+  id: Float
+  name: String
+}
+
 input CreateItemInput {
   name: String!
   description: String
   price: Float!
-  category: String!
   image: String
-  restaurantId: Float!
+  categoryId: Float!
 }
 
 input UpdateItemInput {
@@ -75,7 +92,6 @@ input UpdateItemInput {
   name: String
   description: String
   price: Float
-  category: String
   image: String
 }
 

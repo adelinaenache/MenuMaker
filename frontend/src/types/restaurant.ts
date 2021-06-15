@@ -7,7 +7,10 @@ export type Item = {
   image?: string;
 };
 
-export type Menu = Item[];
+export type Category = {
+  name: string;
+  items: Item[];
+};
 
 export type Restaurant = {
   id: number;
@@ -16,5 +19,5 @@ export type Restaurant = {
   city: string;
   country: string;
   address: string;
-  menu: Menu;
+  categories: Category[];
 };
