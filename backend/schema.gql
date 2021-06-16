@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Item {
+  id: Int!
+  name: String!
+  description: String
+  price: Float!
+  image: String
+}
+
+type Category {
+  id: Int!
+  name: String!
+  items: [Item!]!
+}
+
 type Restaurant {
   id: Int!
   access: Boolean
@@ -9,6 +23,10 @@ type Restaurant {
   city: String!
   country: String!
   address: String!
+  userId: String!
+  categories: [Category!]!
+  itemCount: Int!
+  priceRange: [Float!]!
 }
 
 type User {
@@ -17,6 +35,7 @@ type User {
   firstName: String
   lastName: String
   restaurants: [Restaurant]
+  password: String
 }
 
 type Auth {
@@ -26,12 +45,20 @@ type Auth {
 }
 
 type Query {
+  restaurants: [Restaurant!]!
   restaurant(id: Int!): Restaurant!
+  category(restaurantId: Int!): [Category!]!
   me: User!
 }
 
 type Mutation {
   createRestaurant(data: CreateRestaurantInput!): Restaurant!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
+  createItem(createItemInput: CreateItemInput!): Item!
+  updateItem(updateItemInput: UpdateItemInput!): Item!
+  removeItem(id: Int!): Item!
   signup(data: SignupInput!): Auth!
   login(data: LoginInput!): Auth!
   refreshToken(data: String!): Auth!
@@ -44,6 +71,32 @@ input CreateRestaurantInput {
   country: String!
   city: String!
   address: String!
+}
+
+input CreateCategoryInput {
+  name: String!
+  restaurantId: Int!
+}
+
+input UpdateCategoryInput {
+  id: Int
+  name: String
+}
+
+input CreateItemInput {
+  name: String!
+  description: String
+  price: Float!
+  image: String
+  categoryId: Int!
+}
+
+input UpdateItemInput {
+  id: Int
+  name: String
+  description: String
+  price: Float
+  image: String
 }
 
 input SignupInput {
