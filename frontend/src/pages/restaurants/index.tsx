@@ -1,12 +1,12 @@
 import { Button, Layout } from '@/components';
 import { NextChakraLink } from '@/components/NextChakraLink';
 import { withAuth } from '@/hoc';
-import { useRestaurantList } from '@/hooks';
+import { useMyRestaurantList } from '@/hooks';
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 const RestaurantsDashboard = withAuth(() => {
-  const { restaurants } = useRestaurantList();
+  const { restaurants } = useMyRestaurantList();
 
   return (
     <Layout>

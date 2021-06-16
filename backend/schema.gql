@@ -24,6 +24,8 @@ type Restaurant {
   country: String!
   address: String!
   categories: [Category!]!
+  itemCount: Int!
+  priceRange: [Float!]!
 }
 
 type User {

@@ -31,6 +31,8 @@ export const RESTAURANT_FIELDS = gql`
     country
     city
     address
+    itemCount
+    priceRange
   }
 `;
 
@@ -167,4 +169,19 @@ export type GetRestaurantParams = Pick<Restaurant, 'id'>;
 
 export type GetRestaurantResult = {
   restaurant: Restaurant;
+};
+
+export const GET_RESTAURANTS = gql`
+  ${RESTAURANT_FIELDS}
+  ${CATEGORY_FIELDS}
+
+  query GET_RESTAURANT {
+    restaurants {
+      ...RestaurantFields
+    }
+  }
+`;
+
+export type GetRestaurantsResult = {
+  restaurants: Restaurant[];
 };

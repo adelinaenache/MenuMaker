@@ -1,2 +1,2 @@
 export * from './useUser';
-export * from './useRestaurantList';
+export * from 'hooks/useMyRestaurantList';

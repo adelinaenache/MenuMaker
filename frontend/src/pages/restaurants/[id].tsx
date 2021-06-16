@@ -190,9 +190,7 @@ const Restaurant = () => {
                   }}
                 >
                   <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
-                    <Text fontSize="3xl" color="gray.100">
-                      Add new item
-                    </Text>
+                    <Text fontSize="3xl">Add new item</Text>
                   </Flex>
                 </Button>
               </SimpleGrid>

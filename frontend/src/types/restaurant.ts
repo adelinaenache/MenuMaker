@@ -21,4 +21,6 @@ export type Restaurant = {
   country: string;
   address: string;
   categories: Category[];
+  itemCount: number;
+  priceRange: [number, number];
 };
