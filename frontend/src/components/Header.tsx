@@ -17,8 +17,15 @@ export const Header = () => {
         </Flex>
       </HStack>
 
-      <HStack spacing={8}>
-        {user && <Button href="/restaurants">View your restaurants</Button>}
+      <HStack spacing={4}>
+        {user ? (
+          <Button href="/restaurants">View your restaurants</Button>
+        ) : (
+          <>
+            <Button href="/auth/login">Login</Button>
+            <Button href="/auth/signup">Signup</Button>
+          </>
+        )}
 
         <DarkModeSwitch />
       </HStack>
