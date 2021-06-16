@@ -8,6 +8,7 @@ export type Item = {
 };
 
 export type Category = {
+  id: number;
   name: string;
   items: Item[];
 };

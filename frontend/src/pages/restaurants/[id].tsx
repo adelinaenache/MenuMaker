@@ -4,17 +4,20 @@ import {
   CREATE_CATEGORY,
   CreateCategoryParams,
   CreateCategoryResult,
-  GET_RESTAURANT,
-  RESTAURANT_FIELDS,
+  DELETE_CATEGORY,
+  DeleteCategoryParams,
+  DeleteCategoryResult,
 } from '@/gql/restaurant';
 import { useRestaurant } from '@/hooks/useRestaurant';
+import { Category } from '@/types/restaurant';
 import { useMutation } from '@apollo/client';
+import { MinusIcon } from '@chakra-ui/icons';
 import {
   Box,
   Flex,
+  IconButton,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -26,7 +29,7 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import * as yup from 'yup';
 
 const categorySchema = yup.object().shape({
@@ -39,22 +42,15 @@ const Restaurant = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [errorMessage, setErrorMessage] = useState<string | null>();
-
   const [createCategory] = useMutation<CreateCategoryResult, CreateCategoryParams>(CREATE_CATEGORY, {
-    onCompleted: () => {
-      onClose();
-    },
+    onCompleted: onClose,
     onError: (err) => {
-      console.log(err);
-      setErrorMessage(err.message);
+      console.error(err);
     },
     update: (cache, { data }) => {
       if (!data || !restaurant) {
         return;
       }
-
-      // console.log(restaurant);
 
       cache.modify({
         id: cache.identify(restaurant),
@@ -72,14 +68,41 @@ const Restaurant = () => {
     },
   });
 
+  const [deleteCategory] = useMutation<DeleteCategoryResult, DeleteCategoryParams>(DELETE_CATEGORY, {
+    onCompleted: onClose,
+    onError: (err) => {
+      console.error(err);
+    },
+    update: (cache, { data }) => {
+      if (!data || !restaurant) {
+        return;
+      }
+
+      cache.evict({ id: cache.identify(data.removeCategory) });
+    },
+  });
+
   return (
     <Layout>
       {restaurant &&
         restaurant.categories.map((category) => (
-          <Box key={category.name}>
-            <Text fontSize="4xl" my={6} textAlign="center">
-              {category.name}
-            </Text>
+          <Box key={category.id}>
+            <Box position="relative">
+              <Text fontSize="4xl" my={6} textAlign="center">
+                {category.name}
+              </Text>
+
+              <IconButton
+                color="red.300"
+                rounded="full"
+                aria-label="Delete category"
+                pos="absolute"
+                right="0"
+                top="50%"
+                icon={<MinusIcon />}
+                onClick={() => deleteCategory({ variables: { id: category.id } })}
+              />
+            </Box>
 
             <SimpleGrid columns={3} gap={6}>
               {category.items.map((item) => (

@@ -68,6 +68,20 @@ export type CreateCategoryResult = {
   createCategory: Category;
 };
 
+export const DELETE_CATEGORY = gql`
+  mutation DELETE_CATEGORY($id: Int!) {
+    removeCategory(id: $id) {
+      id
+    }
+  }
+`;
+
+export type DeleteCategoryParams = Pick<Restaurant, 'id'>;
+
+export type DeleteCategoryResult = {
+  removeCategory: Pick<Category, 'id'>;
+};
+
 export const MY_RESTAURANTS = gql`
   ${RESTAURANT_FIELDS}
 
