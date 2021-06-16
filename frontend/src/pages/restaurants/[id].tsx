@@ -201,9 +201,13 @@ const Restaurant = () => {
                             <Text fontSize="md">{item.price} lei</Text>
                           </Flex>
 
-                          {item.image && (
-                            <Image rounded="lg" w={100} src={item.image} alt={`${item.name} image`} objectFit="cover" />
-                          )}
+                          <Image
+                            rounded="lg"
+                            w={100}
+                            src={item.image || 'https://designshack.net/wp-content/uploads/placeholder-image.png'}
+                            alt={`${item.name} image`}
+                            objectFit="cover"
+                          />
                         </Flex>
                       </Flex>
 
@@ -217,7 +221,10 @@ const Restaurant = () => {
                           right="0"
                           w="100px"
                           h="100px"
-                          onClick={() => deleteItem({ variables: { id: item.id } })}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteItem({ variables: { id: item.id } });
+                          }}
                         />
                       )}
                     </Box>
