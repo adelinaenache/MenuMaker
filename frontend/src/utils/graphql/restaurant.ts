@@ -1,5 +1,27 @@
-import { Menu, Restaurant } from '@/types/restaurant';
+import { Category, Menu, Restaurant } from '@/types/restaurant';
 import { gql } from '@apollo/client/core';
+
+export const ITEM_FIELDS = gql`
+  fragment ItemFields on Item {
+    id
+    name
+    price
+    description
+    image
+  }
+`;
+
+export const CATEGORY_FIELDS = gql`
+  ${ITEM_FIELDS}
+
+  fragment CategoryFields on Category {
+    id
+    name
+    items {
+      ...ItemFields
+    }
+  }
+`;
 
 export const RESTAURANT_FIELDS = gql`
   fragment RestaurantFields on Restaurant {
@@ -13,18 +35,12 @@ export const RESTAURANT_FIELDS = gql`
 `;
 
 export const RESTAURANT_MENU = gql`
+  ${CATEGORY_FIELDS}
+
   query RESTAURANT_MENU($id: Int!) {
     restaurant(id: $id) {
       categories {
-        id
-        name
-        items {
-          id
-          name
-          price
-          description
-          image
-        }
+        ...CategoryFields
       }
     }
   }
@@ -34,6 +50,22 @@ export type RestaurantMenuParams = Pick<Restaurant, 'id'>;
 
 export type RestaurantMenuResult = {
   restaurant: Pick<Restaurant, 'categories'>;
+};
+
+export const CREATE_CATEGORY = gql`
+  ${CATEGORY_FIELDS}
+
+  mutation CREATE_CATEGORY($name: String!, $restaurantId: Int!) {
+    createCategory(createCategoryInput: { name: $name, restaurantId: $restaurantId }) {
+      ...CategoryFields
+    }
+  }
+`;
+
+export type CreateCategoryParams = { restaurantId: Restaurant['id'] } & Pick<Category, 'name'>;
+
+export type CreateCategoryResult = {
+  createCategory: Category;
 };
 
 export const MY_RESTAURANTS = gql`
@@ -69,4 +101,24 @@ export type CreateRestaurantMutation = Pick<Restaurant, 'name' | 'country' | 'ci
 
 export type CreateRestaurantResult = {
   createRestaurant: Restaurant;
+};
+
+export const GET_RESTAURANT = gql`
+  ${RESTAURANT_FIELDS}
+  ${CATEGORY_FIELDS}
+
+  query GET_RESTAURANT($id: Int!) {
+    restaurant(id: $id) {
+      ...RestaurantFields
+      categories {
+        ...CategoryFields
+      }
+    }
+  }
+`;
+
+export type GetRestaurantParams = Pick<Restaurant, 'id'>;
+
+export type GetRestaurantResult = {
+  restaurant: Restaurant;
 };

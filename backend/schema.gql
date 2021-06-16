@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Item {
-  id: Float!
+  id: Int!
   name: String!
   description: String
   price: Float!
@@ -11,7 +11,7 @@ type Item {
 }
 
 type Category {
-  id: Float!
+  id: Int!
   name: String!
   items: [Item!]!
 }
@@ -71,11 +71,11 @@ input CreateRestaurantInput {
 
 input CreateCategoryInput {
   name: String!
-  restaurantId: Float!
+  restaurantId: Int!
 }
 
 input UpdateCategoryInput {
-  id: Float
+  id: Int
   name: String
 }
 
@@ -84,11 +84,11 @@ input CreateItemInput {
   description: String
   price: Float!
   image: String
-  categoryId: Float!
+  categoryId: Int!
 }
 
 input UpdateItemInput {
-  id: Float
+  id: Int
   name: String
   description: String
   price: Float
