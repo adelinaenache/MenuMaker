@@ -4,9 +4,10 @@ Restaurant menu management site
 # Intended feature list:
 
 ### MVP features
-* Restaurant admins: Create menu items for their restaurant
+* Restaurant admins: Create and manage menus and their items for each restaurant they've created
 * Restaurant admins: Generate QR codes linking to the menu
-* Clients: Scan the QR code to open the menu
+* Clients: Can scan the generated QR codes to open the restaurants' menus
+* Clients: See a list of all restaurants available on the platform and details about them and their menus
 
 ### Ideal features
 * Clients: Place orders from the opened menu
