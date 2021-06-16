@@ -14,10 +14,13 @@ import {
   DeleteItemParams,
   DeleteItemResult,
   ITEM_FIELDS,
+  UPDATE_ITEM,
+  UpdateItemParams,
+  UpdateItemResult,
 } from '@/gql/restaurant';
 import { useUser } from '@/hooks';
 import { useRestaurant } from '@/hooks/useRestaurant';
-import { Category } from '@/types/restaurant';
+import { Category, Item } from '@/types/restaurant';
 import { useMutation } from '@apollo/client';
 import { MinusIcon } from '@chakra-ui/icons';
 import {
@@ -50,7 +53,7 @@ const itemSchema = yup.object().shape({
   name: yup.string().required(),
   description: yup.string(),
   price: yup.number().min(0).required(),
-  image: yup.string(),
+  image: yup.mixed(),
 });
 
 const Restaurant = () => {
@@ -62,6 +65,7 @@ const Restaurant = () => {
   const { isOpen: isCreateItemOpen, onOpen: onCreateItemOpen, onClose: onCreateItemClose } = useDisclosure();
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const [createCategory] = useMutation<CreateCategoryResult, CreateCategoryParams>(CREATE_CATEGORY, {
     onCompleted: onClose,
@@ -122,6 +126,15 @@ const Restaurant = () => {
     },
   });
 
+  const [updateItem] = useMutation<UpdateItemResult, UpdateItemParams>(UPDATE_ITEM, {
+    onCompleted: () => {
+      onCreateItemClose();
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
   const hasAccess = restaurant && user?.id === parseInt(restaurant?.userId);
 
   return (
@@ -159,7 +172,23 @@ const Restaurant = () => {
 
                 <SimpleGrid columns={3} gap={6}>
                   {category.items.map((item) => (
-                    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" pos="relative" key={item.id}>
+                    <Box
+                      maxW="sm"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      pos="relative"
+                      onClick={
+                        hasAccess
+                          ? () => {
+                              setSelectedItem(item);
+                              onCreateItemOpen();
+                            }
+                          : undefined
+                      }
+                      cursor={hasAccess ? 'pointer' : undefined}
+                      key={item.id}
+                    >
                       <Flex flexDir="column" flex="1" py={3} pl={3} pr={3} minH="120px">
                         <Flex flex="1">
                           <Flex flexDir="column" flex="1">
@@ -214,39 +243,57 @@ const Restaurant = () => {
                 </SimpleGrid>
               </Box>
 
-              <Modal isOpen={isCreateItemOpen} onClose={onCreateItemClose} isCentered>
+              <Modal
+                isOpen={isCreateItemOpen}
+                onClose={() => {
+                  setSelectedItem(null);
+                  onCreateItemClose();
+                }}
+                isCentered
+              >
                 <Formik
-                  initialValues={{ name: '', description: '', price: 0, image: '' }}
+                  initialValues={selectedItem ?? { name: '', description: '', price: 0, image: '' }}
                   onSubmit={async (values) => {
-                    if (!restaurant || !selectedCategory) {
+                    if (!restaurant) {
                       return;
                     }
 
-                    await createItem({
-                      variables: {
-                        ...values,
-                        price: parseFloat((values.price as any) as string),
-                        categoryId: selectedCategory.id,
-                      },
-                      update: (cache, { data }) => {
-                        if (!data) {
-                          return;
-                        }
+                    if (!selectedItem) {
+                      if (!selectedCategory) {
+                        return;
+                      }
 
-                        cache.modify({
-                          id: cache.identify(selectedCategory),
-                          fields: {
-                            items: (items = []) => {
-                              const newItemRef = cache.writeFragment({
-                                data: data.createItem,
-                                fragment: ITEM_FIELDS,
-                              });
-                              return [...items, newItemRef];
+                      await createItem({
+                        variables: {
+                          ...values,
+                          price: parseFloat((values.price as any) as string),
+                          categoryId: selectedCategory.id,
+                        },
+                        update: (cache, { data }) => {
+                          if (!data) {
+                            return;
+                          }
+
+                          cache.modify({
+                            id: cache.identify(selectedCategory),
+                            fields: {
+                              items: (items = []) => {
+                                const newItemRef = cache.writeFragment({
+                                  data: data.createItem,
+                                  fragment: ITEM_FIELDS,
+                                });
+                                return [...items, newItemRef];
+                              },
                             },
-                          },
-                        });
-                      },
-                    });
+                          });
+                        },
+                      });
+                    } else {
+                      await updateItem({
+                        variables: { id: selectedItem.id, ...values, price: parseFloat((values.price as any) as string) },
+                      });
+                      setSelectedItem(null);
+                    }
                   }}
                   validationSchema={itemSchema}
                 >
@@ -260,16 +307,22 @@ const Restaurant = () => {
                           <InputControl name="name" label="Name" />
                           <TextareaControl name="description" label="Description" />
                           <NumberInputControl name="price" label="Price" />
-                          <InputControl inputProps={{ type: 'image' }} name="image" label="Image" />
+                          {/*<InputControl inputProps={{ type: 'image' }} name="image" label="Image" />*/}
                         </ModalBody>
 
                         <ModalFooter>
-                          <Button onClick={onCreateItemClose} mr={3}>
+                          <Button
+                            onClick={() => {
+                              setSelectedItem(null);
+                              onCreateItemClose();
+                            }}
+                            mr={3}
+                          >
                             Cancel
                           </Button>
 
                           <Button type="submit" colorScheme="blue" isLoading={isSubmitting}>
-                            Create
+                            {selectedItem ? 'Change' : 'Create'}
                           </Button>
                         </ModalFooter>
                       </ModalContent>

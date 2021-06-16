@@ -103,6 +103,22 @@ export type CreateItemResult = {
   createItem: Item;
 };
 
+export const UPDATE_ITEM = gql`
+  ${ITEM_FIELDS}
+
+  mutation UPDATE_ITEM($name: String!, $image: String, $description: String, $price: Float!, $id: Int!) {
+    updateItem(updateItemInput: { name: $name, image: $image, description: $description, price: $price, id: $id }) {
+      ...ItemFields
+    }
+  }
+`;
+
+export type UpdateItemParams = Omit<Item, 'categoryId'>;
+
+export type UpdateItemResult = {
+  updateItem: Item;
+};
+
 export const DELETE_ITEM = gql`
   mutation DELETE_ITEM($id: Int!) {
     removeItem(id: $id) {
