@@ -26,7 +26,7 @@ export default function Login() {
         setToken(ACCESS_TOKEN, login.accessToken);
         setToken(REFRESH_TOKEN, login.refreshToken);
         await router.push({
-          pathname: "/",
+          pathname: "/restaurants",
         });
       }
     },
