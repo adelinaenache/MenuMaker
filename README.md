@@ -7,10 +7,10 @@ Restaurant menu management site
 * Restaurant admins: Create menu items for their restaurant
 * Restaurant admins: Generate QR codes linking to the menu
 * Clients: Scan the QR code to open the menu
-* Clients: Place orders from the opened menu
-* Restaurant admins: View all active orders, change the order status (PENDING, PREPARING, DONE)
 
 ### Ideal features
+* Clients: Place orders from the opened menu
+* Restaurant admins: View all active orders, change the order status (PENDING, PREPARING, DONE)
 * Generate distinct QR codes per table for easy on-premis table identification
 * Generate PDF version of menu
 * Ability to customize the look of the PDF version of the menu
