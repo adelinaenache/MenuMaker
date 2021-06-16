@@ -30,7 +30,7 @@ const Index = () => {
                 h="200px"
                 w="100%"
                 objectFit="cover"
-                src={'http://pizzeriaitalianasacele.ro/wp-content/uploads/2014/09/margheritawiki.jpg'}
+                src={'https://designshack.net/wp-content/uploads/placeholder-image.png'}
                 alt={'Pizza'}
               />
 
