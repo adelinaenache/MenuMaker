@@ -8,8 +8,11 @@ import {
   CreateItemParams,
   CreateItemResult,
   DELETE_CATEGORY,
+  DELETE_ITEM,
   DeleteCategoryParams,
   DeleteCategoryResult,
+  DeleteItemParams,
+  DeleteItemResult,
   ITEM_FIELDS,
 } from '@/gql/restaurant';
 import { useRestaurant } from '@/hooks/useRestaurant';
@@ -84,7 +87,6 @@ const Restaurant = () => {
   });
 
   const [deleteCategory] = useMutation<DeleteCategoryResult, DeleteCategoryParams>(DELETE_CATEGORY, {
-    onCompleted: onClose,
     onError: (err) => {
       console.error(err);
     },
@@ -101,6 +103,19 @@ const Restaurant = () => {
     onCompleted: onCreateItemClose,
     onError: (err) => {
       console.error(err);
+    },
+  });
+
+  const [deleteItem] = useMutation<DeleteItemResult, DeleteItemParams>(DELETE_ITEM, {
+    onError: (err) => {
+      console.error(err);
+    },
+    update: (cache, { data }) => {
+      if (!data) {
+        return;
+      }
+
+      cache.evict({ id: cache.identify(data.removeItem) });
     },
   });
 
@@ -130,7 +145,7 @@ const Restaurant = () => {
 
               <SimpleGrid columns={3} gap={6}>
                 {category.items.map((item) => (
-                  <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={item.id}>
+                  <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" pos="relative" key={item.id}>
                     <Flex flexDir="column" flex="1" py={3} pl={3} pr={3} minH="120px">
                       <Flex flex="1">
                         <Flex flexDir="column" flex="1">
@@ -148,6 +163,18 @@ const Restaurant = () => {
                         )}
                       </Flex>
                     </Flex>
+
+                    <Button
+                      rounded="none"
+                      transform="rotate(45deg) translateY(-90%)"
+                      bgColor="red.300"
+                      pos="absolute"
+                      top="0"
+                      right="0"
+                      w="100px"
+                      h="100px"
+                      onClick={() => deleteItem({ variables: { id: item.id } })}
+                    />
                   </Box>
                 ))}
 

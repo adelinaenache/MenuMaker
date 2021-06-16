@@ -100,6 +100,20 @@ export type CreateItemResult = {
   createItem: Item;
 };
 
+export const DELETE_ITEM = gql`
+  mutation DELETE_ITEM($id: Int!) {
+    removeItem(id: $id) {
+      id
+    }
+  }
+`;
+
+export type DeleteItemParams = Pick<Item, 'id'>;
+
+export type DeleteItemResult = {
+  removeItem: Pick<Item, 'id'>;
+};
+
 export const MY_RESTAURANTS = gql`
   ${RESTAURANT_FIELDS}
 
