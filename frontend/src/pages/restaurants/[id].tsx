@@ -141,9 +141,23 @@ const Restaurant = () => {
     <Layout>
       {restaurant && (
         <>
-          <Flex justifyContent="center">
-            <Box p="3" bgColor="white" rounded="xl">
-              <QRCode value={window.location.href} />
+          <Flex
+            justifyContent="center"
+            bg="url(https://designshack.net/wp-content/uploads/placeholder-image.png) no-repeat center center fixed"
+            bgSize="cover"
+            p="3"
+            rounded="xl"
+          >
+            <Box>
+              <Text bgColor="white" rounded="xl" fontSize="5xl" color="black" textAlign="center" px={6} mb={3}>
+                {restaurant.name}
+              </Text>
+
+              <Flex justifyContent="center">
+                <Box p="3" bgColor="white" rounded="xl" w="fit-content">
+                  <QRCode value={window.location.href} />
+                </Box>
+              </Flex>
             </Box>
           </Flex>
 
