@@ -23,6 +23,7 @@ type Restaurant {
   city: String!
   country: String!
   address: String!
+  userId: String!
   categories: [Category!]!
   itemCount: Int!
   priceRange: [Float!]!
@@ -34,6 +35,7 @@ type User {
   firstName: String
   lastName: String
   restaurants: [Restaurant]
+  password: String
 }
 
 type Auth {

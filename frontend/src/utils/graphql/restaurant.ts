@@ -33,6 +33,7 @@ export const RESTAURANT_FIELDS = gql`
     address
     itemCount
     priceRange
+    userId
   }
 `;
 
@@ -173,7 +174,6 @@ export type GetRestaurantResult = {
 
 export const GET_RESTAURANTS = gql`
   ${RESTAURANT_FIELDS}
-  ${CATEGORY_FIELDS}
 
   query GET_RESTAURANT {
     restaurants {

@@ -1,11 +1,11 @@
 import { Hero, Layout, Main } from '@/components';
 import { Price } from '@/components/Price';
-import { useMyRestaurantList } from '@/hooks';
+import { useRestaurantList } from '@/hooks';
 import { Box, SimpleGrid, Image, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 const Index = () => {
-  const { restaurants } = useMyRestaurantList();
+  const { restaurants } = useRestaurantList();
   const router = useRouter();
 
   return (

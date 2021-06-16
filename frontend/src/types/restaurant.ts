@@ -23,4 +23,5 @@ export type Restaurant = {
   categories: Category[];
   itemCount: number;
   priceRange: [number, number];
+  userId: string;
 };

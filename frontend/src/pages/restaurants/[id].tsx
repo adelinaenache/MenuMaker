@@ -15,6 +15,7 @@ import {
   DeleteItemResult,
   ITEM_FIELDS,
 } from '@/gql/restaurant';
+import { useUser } from '@/hooks';
 import { useRestaurant } from '@/hooks/useRestaurant';
 import { Category } from '@/types/restaurant';
 import { useMutation } from '@apollo/client';
@@ -54,6 +55,7 @@ const itemSchema = yup.object().shape({
 const Restaurant = () => {
   const router = useRouter();
   const { restaurant } = useRestaurant(parseInt(router.query.id as string));
+  const { user } = useUser();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isCreateItemOpen, onOpen: onCreateItemOpen, onClose: onCreateItemClose } = useDisclosure();
@@ -119,6 +121,8 @@ const Restaurant = () => {
     },
   });
 
+  const hasAccess = restaurant && user?.id === parseInt(restaurant?.userId);
+
   return (
     <Layout>
       {restaurant &&
@@ -130,17 +134,19 @@ const Restaurant = () => {
                   {category.name}
                 </Text>
 
-                <IconButton
-                  color="red.300"
-                  rounded="full"
-                  aria-label="Delete category"
-                  pos="absolute"
-                  right="0"
-                  top="50%"
-                  transform="translateY(-50%)"
-                  icon={<MinusIcon />}
-                  onClick={() => deleteCategory({ variables: { id: category.id } })}
-                />
+                {hasAccess && (
+                  <IconButton
+                    color="red.300"
+                    rounded="full"
+                    aria-label="Delete category"
+                    pos="absolute"
+                    right="0"
+                    top="50%"
+                    transform="translateY(-50%)"
+                    icon={<MinusIcon />}
+                    onClick={() => deleteCategory({ variables: { id: category.id } })}
+                  />
+                )}
               </Box>
 
               <SimpleGrid columns={3} gap={6}>
@@ -164,35 +170,39 @@ const Restaurant = () => {
                       </Flex>
                     </Flex>
 
-                    <Button
-                      rounded="none"
-                      transform="rotate(45deg) translateY(-90%)"
-                      bgColor="red.300"
-                      pos="absolute"
-                      top="0"
-                      right="0"
-                      w="100px"
-                      h="100px"
-                      onClick={() => deleteItem({ variables: { id: item.id } })}
-                    />
+                    {hasAccess && (
+                      <Button
+                        rounded="none"
+                        transform="rotate(45deg) translateY(-90%)"
+                        bgColor="red.300"
+                        pos="absolute"
+                        top="0"
+                        right="0"
+                        w="100px"
+                        h="100px"
+                        onClick={() => deleteItem({ variables: { id: item.id } })}
+                      />
+                    )}
                   </Box>
                 ))}
 
-                <Button
-                  maxW="sm"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  cursor="pointer"
-                  minH="120px"
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    onCreateItemOpen();
-                  }}
-                >
-                  <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
-                    <Text fontSize="3xl">Add new item</Text>
-                  </Flex>
-                </Button>
+                {hasAccess && (
+                  <Button
+                    maxW="sm"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    cursor="pointer"
+                    minH="120px"
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      onCreateItemOpen();
+                    }}
+                  >
+                    <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
+                      <Text fontSize="3xl">Add new item</Text>
+                    </Flex>
+                  </Button>
+                )}
               </SimpleGrid>
             </Box>
 
@@ -258,11 +268,13 @@ const Restaurant = () => {
           </Box>
         ))}
 
-      <Flex justifyContent="center" pt={6}>
-        <Button w={60} onClick={onOpen}>
-          Add new category
-        </Button>
-      </Flex>
+      {hasAccess && (
+        <Flex justifyContent="center" pt={6}>
+          <Button w={60} onClick={onOpen}>
+            Add new category
+          </Button>
+        </Flex>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <Formik

@@ -1,9 +1,12 @@
 import { Button, DarkModeSwitch } from '@/components';
 import { NextChakraLink } from '@/components/NextChakraLink';
+import { useUser } from '@/hooks';
 import { Flex, HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 export const Header = () => {
+  const { user } = useUser();
+
   return (
     <HStack w="100%" justifyContent="space-between" p={4}>
       <HStack>
@@ -15,7 +18,7 @@ export const Header = () => {
       </HStack>
 
       <HStack spacing={8}>
-        <Button href="/restaurants">View your restaurants</Button>
+        {user && <Button href="/restaurants">View your restaurants</Button>}
 
         <DarkModeSwitch />
       </HStack>
