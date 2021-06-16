@@ -40,6 +40,7 @@ import { InputControl, TextareaControl, NumberInputControl } from 'formik-chakra
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import * as yup from 'yup';
+import QRCode from 'react-qr-code';
 
 const categorySchema = yup.object().shape({
   name: yup.string().required(),
@@ -125,148 +126,161 @@ const Restaurant = () => {
 
   return (
     <Layout>
-      {restaurant &&
-        restaurant.categories.map((category) => (
-          <Box key={category.id}>
-            <Box>
-              <Box position="relative">
-                <Text fontSize="4xl" my={6} textAlign="center">
-                  {category.name}
-                </Text>
+      {restaurant && (
+        <>
+          <Flex justifyContent="center">
+            <Box p="3" bgColor="white" rounded="xl">
+              <QRCode value={window.location.href} />
+            </Box>
+          </Flex>
 
-                {hasAccess && (
-                  <IconButton
-                    color="red.300"
-                    rounded="full"
-                    aria-label="Delete category"
-                    pos="absolute"
-                    right="0"
-                    top="50%"
-                    transform="translateY(-50%)"
-                    icon={<MinusIcon />}
-                    onClick={() => deleteCategory({ variables: { id: category.id } })}
-                  />
-                )}
-              </Box>
+          {restaurant.categories.map((category) => (
+            <Box key={category.id}>
+              <Box>
+                <Box position="relative">
+                  <Text fontSize="4xl" my={6} textAlign="center">
+                    {category.name}
+                  </Text>
 
-              <SimpleGrid columns={3} gap={6}>
-                {category.items.map((item) => (
-                  <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" pos="relative" key={item.id}>
-                    <Flex flexDir="column" flex="1" py={3} pl={3} pr={3} minH="120px">
-                      <Flex flex="1">
-                        <Flex flexDir="column" flex="1">
+                  {hasAccess && (
+                    <IconButton
+                      color="red.300"
+                      rounded="full"
+                      aria-label="Delete category"
+                      pos="absolute"
+                      right="0"
+                      top="50%"
+                      transform="translateY(-50%)"
+                      icon={<MinusIcon />}
+                      onClick={() => deleteCategory({ variables: { id: category.id } })}
+                    />
+                  )}
+                </Box>
+
+                <SimpleGrid columns={3} gap={6}>
+                  {category.items.map((item) => (
+                    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" pos="relative" key={item.id}>
+                      <Flex flexDir="column" flex="1" py={3} pl={3} pr={3} minH="120px">
+                        <Flex flex="1">
                           <Flex flexDir="column" flex="1">
-                            <Text fontSize="xl">{item.name}</Text>
+                            <Flex flexDir="column" flex="1">
+                              <Text fontSize="xl">{item.name}</Text>
 
-                            <Text fontSize="sm">{item.description}</Text>
+                              <Text fontSize="sm">{item.description}</Text>
+                            </Flex>
+
+                            <Text fontSize="md">{item.price} lei</Text>
                           </Flex>
 
-                          <Text fontSize="md">{item.price} lei</Text>
+                          {item.image && (
+                            <Image rounded="lg" w={100} src={item.image} alt={`${item.name} image`} objectFit="cover" />
+                          )}
                         </Flex>
-
-                        {item.image && (
-                          <Image rounded="lg" w={100} src={item.image} alt={`${item.name} image`} objectFit="cover" />
-                        )}
                       </Flex>
-                    </Flex>
 
-                    {hasAccess && (
-                      <Button
-                        rounded="none"
-                        transform="rotate(45deg) translateY(-90%)"
-                        bgColor="red.300"
-                        pos="absolute"
-                        top="0"
-                        right="0"
-                        w="100px"
-                        h="100px"
-                        onClick={() => deleteItem({ variables: { id: item.id } })}
-                      />
-                    )}
-                  </Box>
-                ))}
+                      {hasAccess && (
+                        <Button
+                          rounded="none"
+                          transform="rotate(45deg) translateY(-90%)"
+                          bgColor="red.300"
+                          pos="absolute"
+                          top="0"
+                          right="0"
+                          w="100px"
+                          h="100px"
+                          onClick={() => deleteItem({ variables: { id: item.id } })}
+                        />
+                      )}
+                    </Box>
+                  ))}
 
-                {hasAccess && (
-                  <Button
-                    maxW="sm"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    cursor="pointer"
-                    minH="120px"
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      onCreateItemOpen();
-                    }}
-                  >
-                    <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
-                      <Text fontSize="3xl">Add new item</Text>
-                    </Flex>
-                  </Button>
-                )}
-              </SimpleGrid>
-            </Box>
+                  {hasAccess && (
+                    <Button
+                      maxW="sm"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      cursor="pointer"
+                      minH="120px"
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        onCreateItemOpen();
+                      }}
+                    >
+                      <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
+                        <Text fontSize="3xl">Add new item</Text>
+                      </Flex>
+                    </Button>
+                  )}
+                </SimpleGrid>
+              </Box>
 
-            <Modal isOpen={isCreateItemOpen} onClose={onCreateItemClose} isCentered>
-              <Formik
-                initialValues={{ name: '', description: '', price: 0, image: '' }}
-                onSubmit={async (values) => {
-                  if (!restaurant || !selectedCategory) {
-                    return;
-                  }
+              <Modal isOpen={isCreateItemOpen} onClose={onCreateItemClose} isCentered>
+                <Formik
+                  initialValues={{ name: '', description: '', price: 0, image: '' }}
+                  onSubmit={async (values) => {
+                    if (!restaurant || !selectedCategory) {
+                      return;
+                    }
 
-                  await createItem({
-                    variables: { ...values, price: parseFloat((values.price as any) as string), categoryId: selectedCategory.id },
-                    update: (cache, { data }) => {
-                      if (!data) {
-                        return;
-                      }
+                    await createItem({
+                      variables: {
+                        ...values,
+                        price: parseFloat((values.price as any) as string),
+                        categoryId: selectedCategory.id,
+                      },
+                      update: (cache, { data }) => {
+                        if (!data) {
+                          return;
+                        }
 
-                      cache.modify({
-                        id: cache.identify(selectedCategory),
-                        fields: {
-                          items: (items = []) => {
-                            const newItemRef = cache.writeFragment({
-                              data: data.createItem,
-                              fragment: ITEM_FIELDS,
-                            });
-                            return [...items, newItemRef];
+                        cache.modify({
+                          id: cache.identify(selectedCategory),
+                          fields: {
+                            items: (items = []) => {
+                              const newItemRef = cache.writeFragment({
+                                data: data.createItem,
+                                fragment: ITEM_FIELDS,
+                              });
+                              return [...items, newItemRef];
+                            },
                           },
-                        },
-                      });
-                    },
-                  });
-                }}
-                validationSchema={itemSchema}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Create a new item</ModalHeader>
+                        });
+                      },
+                    });
+                  }}
+                  validationSchema={itemSchema}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Create a new item</ModalHeader>
 
-                      <ModalBody pb={6}>
-                        <InputControl name="name" label="Name" />
-                        <TextareaControl name="description" label="Description" />
-                        <NumberInputControl name="price" label="Price" />
-                        <InputControl inputProps={{ type: 'image' }} name="image" label="Image" />
-                      </ModalBody>
+                        <ModalBody pb={6}>
+                          <InputControl name="name" label="Name" />
+                          <TextareaControl name="description" label="Description" />
+                          <NumberInputControl name="price" label="Price" />
+                          <InputControl inputProps={{ type: 'image' }} name="image" label="Image" />
+                        </ModalBody>
 
-                      <ModalFooter>
-                        <Button onClick={onCreateItemClose} mr={3}>
-                          Cancel
-                        </Button>
+                        <ModalFooter>
+                          <Button onClick={onCreateItemClose} mr={3}>
+                            Cancel
+                          </Button>
 
-                        <Button type="submit" colorScheme="blue" isLoading={isSubmitting}>
-                          Create
-                        </Button>
-                      </ModalFooter>
-                    </ModalContent>
-                  </Form>
-                )}
-              </Formik>
-            </Modal>
-          </Box>
-        ))}
+                          <Button type="submit" colorScheme="blue" isLoading={isSubmitting}>
+                            Create
+                          </Button>
+                        </ModalFooter>
+                      </ModalContent>
+                    </Form>
+                  )}
+                </Formik>
+              </Modal>
+            </Box>
+          ))}
+        </>
+      )}
 
       {hasAccess && (
         <Flex justifyContent="center" pt={6}>
