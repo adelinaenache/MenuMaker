@@ -1,4 +1,4 @@
-import { Category, Menu, Restaurant } from '@/types/restaurant';
+import { Category, Item, Menu, Restaurant } from '@/types/restaurant';
 import { gql } from '@apollo/client/core';
 
 export const ITEM_FIELDS = gql`
@@ -80,6 +80,24 @@ export type DeleteCategoryParams = Pick<Restaurant, 'id'>;
 
 export type DeleteCategoryResult = {
   removeCategory: Pick<Category, 'id'>;
+};
+
+export const CREATE_ITEM = gql`
+  ${ITEM_FIELDS}
+
+  mutation CREATE_ITEM($name: String!, $image: String, $description: String, $price: Float!, $categoryId: Int!) {
+    createItem(
+      createItemInput: { name: $name, image: $image, description: $description, price: $price, categoryId: $categoryId }
+    ) {
+      ...ItemFields
+    }
+  }
+`;
+
+export type CreateItemParams = Omit<Item, 'id'>;
+
+export type CreateItemResult = {
+  createItem: Item;
 };
 
 export const MY_RESTAURANTS = gql`

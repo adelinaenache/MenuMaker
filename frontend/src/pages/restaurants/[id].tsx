@@ -2,11 +2,15 @@ import { Button, Layout } from '@/components';
 import {
   CATEGORY_FIELDS,
   CREATE_CATEGORY,
+  CREATE_ITEM,
   CreateCategoryParams,
   CreateCategoryResult,
+  CreateItemParams,
+  CreateItemResult,
   DELETE_CATEGORY,
   DeleteCategoryParams,
   DeleteCategoryResult,
+  ITEM_FIELDS,
 } from '@/gql/restaurant';
 import { useRestaurant } from '@/hooks/useRestaurant';
 import { Category } from '@/types/restaurant';
@@ -25,15 +29,23 @@ import {
   SimpleGrid,
   Text,
   useDisclosure,
+  Image,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import { InputControl } from 'formik-chakra-ui';
+import { InputControl, TextareaControl, NumberInputControl } from 'formik-chakra-ui';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import * as yup from 'yup';
 
 const categorySchema = yup.object().shape({
   name: yup.string().required(),
+});
+
+const itemSchema = yup.object().shape({
+  name: yup.string().required(),
+  description: yup.string(),
+  price: yup.number().min(0).required(),
+  image: yup.string(),
 });
 
 const Restaurant = () => {
@@ -41,6 +53,9 @@ const Restaurant = () => {
   const { restaurant } = useRestaurant(parseInt(router.query.id as string));
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isCreateItemOpen, onOpen: onCreateItemOpen, onClose: onCreateItemClose } = useDisclosure();
+
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   const [createCategory] = useMutation<CreateCategoryResult, CreateCategoryParams>(CREATE_CATEGORY, {
     onCompleted: onClose,
@@ -82,60 +97,139 @@ const Restaurant = () => {
     },
   });
 
+  const [createItem] = useMutation<CreateItemResult, CreateItemParams>(CREATE_ITEM, {
+    onCompleted: onCreateItemClose,
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
   return (
     <Layout>
       {restaurant &&
         restaurant.categories.map((category) => (
           <Box key={category.id}>
-            <Box position="relative">
-              <Text fontSize="4xl" my={6} textAlign="center">
-                {category.name}
-              </Text>
+            <Box>
+              <Box position="relative">
+                <Text fontSize="4xl" my={6} textAlign="center">
+                  {category.name}
+                </Text>
 
-              <IconButton
-                color="red.300"
-                rounded="full"
-                aria-label="Delete category"
-                pos="absolute"
-                right="0"
-                top="50%"
-                icon={<MinusIcon />}
-                onClick={() => deleteCategory({ variables: { id: category.id } })}
-              />
+                <IconButton
+                  color="red.300"
+                  rounded="full"
+                  aria-label="Delete category"
+                  pos="absolute"
+                  right="0"
+                  top="50%"
+                  transform="translateY(-50%)"
+                  icon={<MinusIcon />}
+                  onClick={() => deleteCategory({ variables: { id: category.id } })}
+                />
+              </Box>
+
+              <SimpleGrid columns={3} gap={6}>
+                {category.items.map((item) => (
+                  <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={item.id}>
+                    <Flex flexDir="column" flex="1" py={3} pl={3} pr={3} minH="120px">
+                      <Flex flex="1">
+                        <Flex flexDir="column" flex="1">
+                          <Flex flexDir="column" flex="1">
+                            <Text fontSize="xl">{item.name}</Text>
+
+                            <Text fontSize="sm">{item.description}</Text>
+                          </Flex>
+
+                          <Text fontSize="md">{item.price} lei</Text>
+                        </Flex>
+
+                        {item.image && (
+                          <Image rounded="lg" w={100} src={item.image} alt={`${item.name} image`} objectFit="cover" />
+                        )}
+                      </Flex>
+                    </Flex>
+                  </Box>
+                ))}
+
+                <Button
+                  maxW="sm"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  cursor="pointer"
+                  minH="120px"
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    onCreateItemOpen();
+                  }}
+                >
+                  <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
+                    <Text fontSize="3xl" color="gray.100">
+                      Add new item
+                    </Text>
+                  </Flex>
+                </Button>
+              </SimpleGrid>
             </Box>
 
-            <SimpleGrid columns={3} gap={6}>
-              {category.items.map((item) => (
-                <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={item.id}>
-                  <Flex flexDir="column" flex="1" px={6} py={3} minH="120px">
-                    <Flex flexDir="column" flex="1">
-                      <Text fontSize="xl">{item.name}</Text>
+            <Modal isOpen={isCreateItemOpen} onClose={onCreateItemClose} isCentered>
+              <Formik
+                initialValues={{ name: '', description: '', price: 0, image: '' }}
+                onSubmit={async (values) => {
+                  if (!restaurant || !selectedCategory) {
+                    return;
+                  }
 
-                      <Text fontSize="sm">{item.description}</Text>
-                    </Flex>
+                  await createItem({
+                    variables: { ...values, price: parseFloat((values.price as any) as string), categoryId: selectedCategory.id },
+                    update: (cache, { data }) => {
+                      if (!data) {
+                        return;
+                      }
 
-                    <Text fontSize="md">{item.price} lei</Text>
-                  </Flex>
-                </Box>
-              ))}
-
-              <Button
-                maxW="sm"
-                borderRadius="lg"
-                overflow="hidden"
-                cursor="pointer"
-                minH="120px"
-                onClick={() => {
-                  console.log('adding item');
+                      cache.modify({
+                        id: cache.identify(selectedCategory),
+                        fields: {
+                          items: (items = []) => {
+                            const newItemRef = cache.writeFragment({
+                              data: data.createItem,
+                              fragment: ITEM_FIELDS,
+                            });
+                            return [...items, newItemRef];
+                          },
+                        },
+                      });
+                    },
+                  });
                 }}
+                validationSchema={itemSchema}
               >
-                <Flex flexDir="column" justifyContent="center" alignItems="center" flex="1" px={6} py={3}>
-                  <Text fontSize="3xl" color="gray.100">
-                    Add new item
-                  </Text>
-                </Flex>
-              </Button>
-            </SimpleGrid>
+                {({ isSubmitting }) => (
+                  <Form>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Create a new item</ModalHeader>
+
+                      <ModalBody pb={6}>
+                        <InputControl name="name" label="Name" />
+                        <TextareaControl name="description" label="Description" />
+                        <NumberInputControl name="price" label="Price" />
+                        <InputControl inputProps={{ type: 'image' }} name="image" label="Image" />
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button onClick={onCreateItemClose} mr={3}>
+                          Cancel
+                        </Button>
+
+                        <Button type="submit" colorScheme="blue" isLoading={isSubmitting}>
+                          Create
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Form>
+                )}
+              </Formik>
+            </Modal>
           </Box>
         ))}
 

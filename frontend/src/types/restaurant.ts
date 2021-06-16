@@ -3,7 +3,7 @@ export type Item = {
   name: string;
   description?: string;
   price: number;
-  category: string;
+  categoryId: number;
   image?: string;
 };
 
