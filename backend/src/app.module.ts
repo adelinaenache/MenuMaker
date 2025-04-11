@@ -8,12 +8,14 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
 import { CategoryModule } from './category/category.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
     RestaurantsModule,
     AuthModule,
     GraphQLModule.forRoot({
+      driver: ApolloDriver,
       debug: process.env.NODE_ENV !== 'production',
       playground: process.env.NODE_ENV !== 'production',
       autoSchemaFile: 'schema.gql',

@@ -1,25 +1,16 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { Auth } from './models/auth.model';
-import { hash, compare } from 'bcrypt';
+import { hash, compare } from 'bcryptjs';
 import { HASH_ROUNDS, JWT_REFRESH_EXPIRE } from '../utils/constants';
 import { SignupInput } from './dto/signup.dto';
 import { LoginInput } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly jwtService: JwtService, private readonly prisma: PrismaService) {}
 
   async hashPassword(password: string) {
     return hash(password, HASH_ROUNDS);
@@ -42,10 +33,7 @@ export class AuthService {
 
       return this.generateToken(user.id);
     } catch (e) {
-      if (
-        e instanceof Prisma.PrismaClientKnownRequestError &&
-        e.code === 'P2002'
-      ) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ConflictException(`Email ${payload.email} already used.`);
       } else {
         throw new Error(e);
