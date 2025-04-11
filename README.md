@@ -1,6 +1,44 @@
 # MenuMaker
 Restaurant menu management site
 
+# Start up guide. 
+In the root of the project open run: 
+```
+docker compose up 
+```
+
+This will start the database.
+
+
+To install the backend dependencies: 
+Install the dependencies with `yarn`: 
+```
+cd backend
+yarn install
+```
+To migrate the DB run: 
+```
+npx primsa migrate deploy 
+npx prisma generate
+```
+
+Now, we can start the backend with 
+```
+yarn start:dev
+```
+
+To install the frontend: 
+```
+cd frontend
+yarn install
+```
+
+To run the frontend: 
+```
+yarn dev
+```
+
+Close the warnings. 
 # Intended feature list:
 
 ### MVP features
