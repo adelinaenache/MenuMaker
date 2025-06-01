@@ -21,6 +21,5 @@ COPY --from=builder /app/backend/package.json ./
 COPY --from=builder /app/backend/yarn.lock ./
 COPY --from=builder /app/backend/dist ./dist
 COPY --from=builder /app/backend/prisma ./prisma
-RUN yarn run prisma migrate deploy
 
-CMD ["node", "dist/main.js"]
+CMD sh -c "yarn run prisma migrate deploy && node dist/main.js"
