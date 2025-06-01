@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
 import { CategoryModule } from './category/category.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     UserModule,
     ItemModule,
     CategoryModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
