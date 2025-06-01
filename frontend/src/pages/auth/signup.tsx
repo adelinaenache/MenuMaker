@@ -1,4 +1,4 @@
-import { Center, Heading, Text } from '@chakra-ui/layout';
+import { Center, Heading, Text } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import * as React from 'react';
 import { AnimatedIntroCard, Layout } from '@/components';

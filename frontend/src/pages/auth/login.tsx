@@ -1,7 +1,7 @@
-import { Center, Heading, Text } from '@chakra-ui/layout';
+import { Center, Heading, Text } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import * as React from 'react';
-import { AnimatedIntroCard, Button, Layout } from "@/components";
+import { AnimatedIntroCard, Button, Layout } from '@/components';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/client';
@@ -26,7 +26,7 @@ export default function Login() {
         setToken(ACCESS_TOKEN, login.accessToken);
         setToken(REFRESH_TOKEN, login.refreshToken);
         await router.push({
-          pathname: "/restaurants",
+          pathname: '/restaurants',
         });
       }
     },

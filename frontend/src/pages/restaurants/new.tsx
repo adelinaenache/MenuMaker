@@ -3,7 +3,7 @@ import { CREATE_RESTAURANT, CreateRestaurantMutation, CreateRestaurantResult, RE
 import { withAuth } from '@/hoc';
 import { useUser } from '@/hooks';
 import { useMutation } from '@apollo/client';
-import { Center, Heading, Text } from '@chakra-ui/layout';
+import { Center, Heading, Text } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';

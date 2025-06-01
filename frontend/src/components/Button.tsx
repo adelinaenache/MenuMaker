@@ -5,7 +5,7 @@ import { LinkProps as NextLinkProps } from 'next/dist/client/link';
 import NextLink from 'next/link';
 import React from 'react';
 
-type BaseButtonProps = NextLinkProps | Never<NextLinkProps>;
+type BaseButtonProps = Partial<NextLinkProps> | Never<NextLinkProps>;
 
 export type ButtonProps = React.PropsWithChildren<BaseButtonProps & Partial<Omit<ChakraButtonProps, 'as'>>>;
 

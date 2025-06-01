@@ -1,5 +1,5 @@
-import { Text } from '@chakra-ui/layout';
-import { Container } from 'next/app';
+import { Text } from '@chakra-ui/react';
+import { Container } from '@chakra-ui/react';
 import * as React from 'react';
 import { withAuth } from 'HOC/withAuth';
 

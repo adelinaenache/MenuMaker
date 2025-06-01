@@ -28,7 +28,7 @@ export const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => {
       />
 
       <Box p="6">
-        <Box d="flex" alignItems="baseline">
+        <Box display="flex" alignItems="baseline">
           <Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="xs" textTransform="uppercase">
             {restaurant.itemCount} items
           </Box>

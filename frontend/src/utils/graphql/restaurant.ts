@@ -1,4 +1,4 @@
-import { Category, Item, Menu, Restaurant } from '@/types/restaurant';
+import { Category, Item, Restaurant } from '@/types/restaurant';
 import { gql } from '@apollo/client/core';
 
 export const ITEM_FIELDS = gql`

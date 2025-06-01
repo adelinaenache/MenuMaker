@@ -1,10 +1,10 @@
-import { Spinner } from '@chakra-ui/spinner';
+import { Spinner } from '@chakra-ui/react';
 import { useUser } from '@/hooks';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 export function withAuth<T>(WrappedComponent: React.ComponentType<T>) {
-  return (props: T) => {
+  return (props: React.PropsWithChildren<T>) => {
     const { loading, error } = useUser();
     const router = useRouter();
 
