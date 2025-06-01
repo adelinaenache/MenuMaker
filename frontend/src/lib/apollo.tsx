@@ -8,6 +8,8 @@ import { ACCESS_TOKEN, getToken } from '@/utils/token';
 export const APOLLO_STATE_PROPERTY_NAME = '__APOLLO_STATE__';
 export const COOKIES_TOKEN_NAME = 'jwt';
 
+const API_URL = process.env.API_URL || 'http://localhost:8000/graphql';
+
 interface PageProps {
   props?: Record<string, any>;
   [APOLLO_STATE_PROPERTY_NAME]?: any;
@@ -17,7 +19,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 const createApolloClient = () => {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:8000/graphql',
+    uri: API_URL,
     // credentials: "include",
   });
 
