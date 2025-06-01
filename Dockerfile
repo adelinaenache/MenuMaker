@@ -1,4 +1,4 @@
-FROM node:14.4 as builder
+FROM node:24-alpine as builder
 ENV NODE_ENV=${NODE_ENV}
 
 RUN mkdir -p /app/backend
@@ -15,12 +15,11 @@ RUN yarn run prisma generate
 ADD ./backend /app/backend
 RUN yarn run build
 
-FROM node:14.4
-
+FROM node:24-alpine
 COPY --from=builder /app/backend/node_modules ./node_modules
 COPY --from=builder /app/backend/package.json ./
 COPY --from=builder /app/backend/yarn.lock ./
 COPY --from=builder /app/backend/dist ./dist
 COPY --from=builder /app/backend/prisma ./prisma
 
-CMD ["node", "dist/src/main.js"]
+CMD sh -c "yarn run prisma migrate deploy && node dist/main.js"

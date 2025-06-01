@@ -30,6 +30,7 @@
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.15",
+    "@nestjs/terminus": "^11.0.0",
     "@prisma/client": "6.6.0",
     "@types/passport": "^1.0.6",
     "apollo-server-express": "^3.13.0",
