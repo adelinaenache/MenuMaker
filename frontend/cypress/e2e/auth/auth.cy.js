@@ -211,6 +211,8 @@ describe('Authentication', () => {
       cy.get('button[type="submit"]').click();
 
       cy.wait('@signupMutation');
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
       // Check that tokens are stored
       cy.window().then((win) => {
