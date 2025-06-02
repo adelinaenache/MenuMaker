@@ -1,4 +1,4 @@
-import { Item } from 'item/entities/item.entity';
+import { Item } from '../entities/item.entity';
 import { InputType, PartialType } from '@nestjs/graphql';
 
 @InputType()

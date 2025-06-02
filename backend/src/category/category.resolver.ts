@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
-import { Item } from 'item/entities/item.entity';
-import { ItemService } from 'item/item.service';
+import { Item } from '../item/entities/item.entity';
+import { ItemService } from '../item/item.service';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
