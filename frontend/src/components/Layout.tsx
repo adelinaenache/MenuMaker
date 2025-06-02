@@ -7,14 +7,15 @@ export type LayoutProps = {
 };
 
 export const Layout = ({ children, unwrapped }: LayoutProps) => {
+  // Only render children if unwrapped is true
+  if (unwrapped) {
+    return <>{children}</>;
+  }
+
   return (
     <Container height="100vh">
       <Header />
-
-      <ConditionalWrapper condition={!unwrapped} thenComponent={<Main />}>
-        {children}
-      </ConditionalWrapper>
-
+      <Main>{children}</Main>
       <Footer />
     </Container>
   );

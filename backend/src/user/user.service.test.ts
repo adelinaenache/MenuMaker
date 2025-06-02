@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { UpdateUserInput } from './dto/update-user.input';
-import { CreateUserInput } from './dto/create-user.input';
 
 @Injectable()
 export class UserService {
@@ -28,7 +27,7 @@ export class UserService {
     return user;
   }
 
-  async create(createUserInput: CreateUserInput) {
+  async create(createUserInput: any) {
     // Basic validation example
     if (!createUserInput.email) {
       throw new BadRequestException('Email is required');

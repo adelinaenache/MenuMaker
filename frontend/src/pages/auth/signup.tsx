@@ -38,7 +38,7 @@ export default function Signup() {
   });
 
   return (
-    <Layout>
+    <Layout unwrapped>
       <Center h="100%" flexDirection="column">
         <Heading my="10">Signup</Heading>
         <AnimatedIntroCard>
@@ -58,7 +58,7 @@ export default function Signup() {
           >
             {() => (
               <Form>
-                <InputControl name="email" label="Email" mt="4" />
+                <InputControl name="email" label="Email" mt="4" inputProps={{ type: 'email' }} />
                 <InputControl name="password" label="Password" mt="4" inputProps={{ type: 'password' }} />
                 <InputControl name="confirmPass" label="Confirm Password" inputProps={{ type: 'password' }} mt="4" />
                 <Center mt="8" flexDirection="column">
