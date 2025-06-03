@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import * as faker from 'faker';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '.prisma/client';
 import { JWT_EXPIRE } from '../utils/constants';
 import { JwtModule } from '@nestjs/jwt';
+import { faker } from '@faker-js/faker';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -30,8 +30,8 @@ describe('AuthService', () => {
       data: {
         email: faker.internet.email(),
         password: faker.internet.password(),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
       },
     });
   });

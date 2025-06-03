@@ -20,6 +20,17 @@ import { HealthModule } from './health/health.module';
       debug: process.env.NODE_ENV !== 'production',
       playground: process.env.NODE_ENV !== 'production',
       autoSchemaFile: 'schema.gql',
+      formatError: (error) => {
+        // Log the error for debugging
+        console.error('GraphQL Error:', error);
+
+        // Return a clean error response
+        return {
+          message: error.message,
+          code: error.extensions?.code || 'INTERNAL_ERROR',
+          path: error.path,
+        };
+      },
     }),
     UserModule,
     ItemModule,

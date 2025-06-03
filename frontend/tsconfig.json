@@ -11,7 +11,7 @@
       "es2017"
     ],
     "module": "esnext",
-    "moduleResolution": "node",
+    // "moduleResolution": "node16",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
@@ -56,7 +56,8 @@
         "HOC"
       ]
     },
-    "incremental": true
+    "incremental": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules"

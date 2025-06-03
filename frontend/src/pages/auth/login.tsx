@@ -21,7 +21,8 @@ const loginSchema = yup.object().shape({
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [sendLogin] = useMutation<LoginResult, AuthMutation>(LOGIN, {
-    async onCompleted({ login }) {
+    async onCompleted(data) {
+      const { login } = data;
       if (login) {
         setToken(ACCESS_TOKEN, login.accessToken);
         setToken(REFRESH_TOKEN, login.refreshToken);
@@ -31,12 +32,12 @@ export default function Login() {
       }
     },
     onError(err) {
-      setErrorMessage(err.message);
+      setErrorMessage(err?.message || 'An unknown error occurred');
     },
   });
 
   return (
-    <Layout>
+    <Layout unwrapped>
       <Center h="100%" flexDirection="column">
         <Heading my="10">Login</Heading>
         <AnimatedIntroCard>
@@ -56,7 +57,7 @@ export default function Login() {
           >
             {() => (
               <Form>
-                <InputControl name="email" label="Email" mt="4" />
+                <InputControl name="email" label="Email" mt="4" inputProps={{ type: 'email' }} />
                 <InputControl name="password" label="Password" mt="4" inputProps={{ type: 'password' }} />
                 <Center mt="8" flexDirection="column">
                   {errorMessage && (
