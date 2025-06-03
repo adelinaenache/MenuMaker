@@ -28,6 +28,8 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 
+coverage/*
+
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
@@ -104,4 +106,5 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
 
-# End of https://www.toptal.com/developers/gitignore/api/webstorm
+.vscode/*
+.idea/*

@@ -10,7 +10,10 @@ import { LoginInput } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService, private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async hashPassword(password: string) {
     return hash(password, HASH_ROUNDS);
@@ -34,7 +37,7 @@ export class AuthService {
       return this.generateToken(user.id);
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
-        throw new ConflictException(`Email ${payload.email} already used.`);
+        throw new ConflictException(`User already exists`);
       } else {
         throw new Error(e);
       }
@@ -46,13 +49,13 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      throw new NotFoundException(`No user found for email: ${email}`);
+      throw new NotFoundException(`Invalid credentials`);
     }
 
     const passwordValid = await this.validatePassword(password, user.password);
 
     if (!passwordValid) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException('Invalid credentials');
     }
 
     return this.generateToken(user.id);
