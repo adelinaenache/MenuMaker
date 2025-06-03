@@ -32,7 +32,6 @@ export default function Login() {
       }
     },
     onError(err) {
-      console.log('ERROR', err);
       setErrorMessage(err?.message || 'An unknown error occurred');
     },
   });

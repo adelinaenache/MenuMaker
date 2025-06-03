@@ -1,4 +1,4 @@
-import { ConditionalWrapper, Container, Footer, Header, Main } from '@/components';
+import { Container, Footer, Header, Main } from '@/components';
 import React from 'react';
 
 export type LayoutProps = {
@@ -7,7 +7,6 @@ export type LayoutProps = {
 };
 
 export const Layout = ({ children, unwrapped }: LayoutProps) => {
-  // Only render children if unwrapped is true
   if (unwrapped) {
     return <>{children}</>;
   }

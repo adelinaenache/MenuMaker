@@ -56,7 +56,8 @@
         "HOC"
       ]
     },
-    "incremental": true
+    "incremental": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules"
