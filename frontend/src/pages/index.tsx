@@ -7,7 +7,7 @@ const Index = () => {
   const { restaurants } = useRestaurantList();
 
   return (
-    <Layout unwrapped>
+    <Layout>
       <Hero title="MenuMaker" />
 
       <Main>
